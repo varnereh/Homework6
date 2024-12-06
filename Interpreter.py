@@ -23,6 +23,15 @@ class Interpreter:
         ('PLUS_ASSIGN', r'(?<=\s)\+=(?=\s)'),                           # Addition assignment operator
         ('MINUS_ASSIGN',r'(?<=\s)-=(?=\s)'),                            # Subtraction assignment operator
         ('MULT_ASSIGN', r'(?<=\s)\*=(?=\s)'),                           # Multiplication assignment operator
+
+
+        # -----------------  NEW TOKENS ----------------------- 
+        ('DIV_ASSIGN', r'(?<=\s)\\=(?=\s)'),                            # Division assignment operator
+        #todo for loop heeeelpp
+        #todo print statements
+        # -----------------------------------------------------
+
+
         ('INT_VAR_VAL', r'(?<=[\+\-\*]=)\s[a-zA-Z_][a-zA-Z_0-9]*'),     # Integer variable (lookahead for operations)
         ('STR_VAR_VAL', r'(?<=\+=)\s[a-zA-Z_][a-zA-Z_0-9]*'),           # String variable (lookahead for addition)
         ('ASS_VAL', r'(?<=\=)\s[a-zA-Z_][a-zA-Z_0-9]*'),                # variable (lookahead for assignment)
