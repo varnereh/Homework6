@@ -26,9 +26,9 @@ class Interpreter:
 
 
         # -----------------  NEW TOKENS ----------------------- 
-        ('DIV_ASSIGN', r'(?<=\s)\\=(?=\s)'),                            # Division assignment operator
+        ('DIV_ASSIGN',  r'(?<=\s)\\=(?=\s)'),                           # Division assignment operator
         #todo for loop heeeelpp
-        #todo print statements
+        ('PRINT_VAR',   r'\bPRINT\s+[a-zA-Z_][a-zA-Z_0-9]*\b'),         # Print statement
         # -----------------------------------------------------
 
 
