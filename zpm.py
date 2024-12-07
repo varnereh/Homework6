@@ -93,7 +93,10 @@ class Interpreter:
                 if variable_name in self.variables:
                     # if it does, grab it
                     variable_value = self.variables[variable_name]
+                    # have to check if it is a string or not, as strings are printed with quotes around them
                     if type(variable_value) == str:
+                        print(f'{variable_name} = "{variable_value}"')
+                    else:
                         print(f'{variable_name} = {variable_value}')
 
 
