@@ -27,7 +27,7 @@ class Interpreter:
 
         # -----------------  NEW TOKENS ----------------------- 
         ('DIV_ASSIGN',  r'(?<=\s)\\=(?=\s)'),                           # Division assignment operator
-        #todo for loop heeeelpp
+        ('FOR_LOOP',    r'\bFOR\b\s+\d+\s+((?:[a-zA-Z_][a-zA-Z_0-9]*\s*[\+\-\*\\]?=\s*(?:\d+|\"[^\"]*\")|PRINT\s+[a-zA-Z_][a-zA-Z_0-9]*\s*[;]?)\s*;?\s*)*\bENDFOR\b'),   # For loop (ChatGPT assisted in specifications for this)
         ('PRINT_VAR',   r'\bPRINT\s+[a-zA-Z_][a-zA-Z_0-9]*\b'),         # Print statement
         # -----------------------------------------------------
 
