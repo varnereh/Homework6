@@ -69,9 +69,9 @@ class Interpreter:
 
     def parse(self, tokens):
         '''
-        Usually in parsisng phase, the tokens are checked and then a data structure (usually a tree)
-        will be constructed from tokens that will be send to another method, and that method actually
-        translate and runs the tokens. HERE, we are combining the parsing with also executing the tokens. 
+        Usually in the parsing phase, the tokens are checked and then a data structure (usually a tree)
+        will be constructed from tokens that will be sent to another method, and that method actually
+        translates and runs the tokens. HERE, we are combining the parsing with also executing the tokens. 
         Just to keep things simpler.
         '''
         it = iter(tokens)
@@ -94,8 +94,7 @@ class Interpreter:
                         else:
                             print(f'{variable_name} = {variable_value}')
 
-                
-                if token[0] in ['INT_VAR', 'STR_VAR'] and not (token[0] == 'PRINT'):
+                elif token[0] in ['INT_VAR', 'STR_VAR'] and not (token[0] == 'PRINT'):
                     variable_name = token[1]
                     try:
                         next(it)  # skip the next token. We will deal with the Str or Int value later
@@ -103,21 +102,23 @@ class Interpreter:
                         value_token = next(it)  # Get the value token
                         semicolon = next(it)[1]  # Ensure semicolon
 
+                        # initialize variable_value before using it
+                        variable_value = None
+
                         if value_token[0] == 'NUMBER':
                             variable_value = int(value_token[1])
                         elif value_token[0] == 'STRING':
-                            variable_value = value_token[1][1:-1]  # getting rid of ""
+                            variable_value = value_token[1][1:-1]  # getting rid of quotes
                         else: 
                             '''
-                            if it's not a number or string, then it's a variable, 
+                            if it's not a number or string, then it's a variable,
                             then it's one of INT_VAR_VAL or STR_VAR_VAL or ASS_VAL
                             so let's get the value of that variable. 
                             '''
                             if value_token[1] not in self.variables:
                                 print(f"Undefined variable '{value_token[1]}' on line {self.line_number}")
                                 sys.exit(1)
-                                variable_value = self.variables[value_token[1]]
-                            
+                            variable_value = self.variables[value_token[1]]
 
                         try: # for capturing the error where we add an int value to a string variable or vice versa
                             if op_token == '=':
@@ -161,12 +162,7 @@ class Interpreter:
             print(f"Error parsing line {self.line_number}: {str(e)}")
             sys.exit(1)
 
-                
-            
-
-
-
-
+   
 
 
     def run(self, file_name = ""):
