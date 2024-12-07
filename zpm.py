@@ -80,6 +80,23 @@ class Interpreter:
         it = iter(tokens)
 
         for token in it:
+            
+            
+            if token[0] == 'PRINT_VAR':
+                # skip over token name etc to variable
+                next(it)
+                next(it)
+                # get part that is just the variable name
+                variable_name = re.sub(r"^PRINT\s+", "", token[1])
+
+                # check to see if the variable actually exists
+                if variable_name in self.variables:
+                    # if it does, grab it
+                    variable_value = self.variables[variable_name]
+                    if type(variable_value) == str:
+                        print(f'{variable_name} = {variable_value}')
+
+
             if token[0] in ['INT_VAR', 'STR_VAR']:
                 var_name = token[1]
                 next(it)  # skip the next token. We will deal with the Str or Int value later
@@ -114,6 +131,12 @@ class Interpreter:
                 except Exception as e:
                     print(f"Error in line: {self.line_number}")
                     sys.exit()
+
+
+
+
+
+
 
     def run(self, file_name = ""):
         """
