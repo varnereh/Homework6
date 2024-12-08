@@ -35,6 +35,7 @@ class Interpreter:
         ('WS',          r'\s+'),                                        # Whitespace
         ('NEWLN',       r'\n')
     )
+   
 
     def __init__(self, file_name):
         self.file_name = file_name
@@ -64,8 +65,7 @@ class Interpreter:
         return tokens
 
 
-    
-                
+        
 
     def parse(self, tokens):
         '''
@@ -77,6 +77,24 @@ class Interpreter:
         it = iter(tokens)
         try: 
             for token in it:
+                
+                # ChatGPT assisted much in both the conceptual approach to this and notifying me of the existence of some of these methods. 
+                # https://docs.python.org/3/library/re.html# also assisted
+                if token[0] == 'FOR_LOOP':
+                    # get the entire for loop token
+                    loop_content = token[1]
+                    # split the result into the FOR part, the count part, and the body of the loop and rest
+                    elements_arr = loop_content.split(None, 2)
+                    # the number of iterations will be the second element
+                    iterations = elements_arr[1] # get the number of iterations
+                    # get the loop body (coming from the right to get rid of the ENDFOR)
+                    loop_body = elements_arr[2].rsplit(None, 1)[0]
+
+                    body_parts = loop_body.split(';')
+                    statements = [statement.strip() for statement in body_parts if statement.strip()]  # remove empty statements and trim
+                      
+
+
                 if token[0] == 'PRINT_VAR':
                     # skip over token name etc to variable
                     next(it)
@@ -119,7 +137,6 @@ class Interpreter:
                                 print(f"Undefined variable '{value_token[1]}' on line {self.line_number}")
                                 sys.exit(1)
                             variable_value = self.variables[value_token[1]]
-
                         try: # for capturing the error where we add an int value to a string variable or vice versa
                             if op_token == '=':
                                 self.variables[variable_name] = variable_value
@@ -202,5 +219,5 @@ if __name__ == "__main__":
     interpreter = Interpreter(filename);
     interpreter.run()
     # if there is no error in the .zpm file, the next line will get printed at the end
-    print(interpreter.variables)
+    # print(interpreter.variables)
 
