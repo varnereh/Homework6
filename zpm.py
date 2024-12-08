@@ -86,13 +86,23 @@ class Interpreter:
                     # split the result into the FOR part, the count part, and the body of the loop and rest
                     elements_arr = loop_content.split(None, 2)
                     # the number of iterations will be the second element
-                    iterations = elements_arr[1] # get the number of iterations
+                    iterations = int(elements_arr[1]) # get the number of iterations
                     # get the loop body (coming from the right to get rid of the ENDFOR)
                     loop_body = elements_arr[2].rsplit(None, 1)[0]
+                    # split by semicolon to get all the body statements
+                    # ChatGPT assisted in using re.findall() in this format because just splitting by ; does not work
+                    body_parts = re.findall(r'.*?;', loop_body)
+                    body_parts = [statemt.strip() for statemt in body_parts if statemt.strip()]  # remove empty statements and trim
+                    # Run the loop for the specified number of iterations
+                    for _ in range(iterations):
+                        for statement in body_parts:
+                            # lexical analysis on each statement to be run 
+                            statement_tokens = self.lexical_analysis(statement)
+                            # parse each statement in order
+                            self.parse(statement_tokens)  
+                    # completely does not work without this return statement and it took forever to figure this out
+                    return        
 
-                    body_parts = loop_body.split(';')
-                    statements = [statement.strip() for statement in body_parts if statement.strip()]  # remove empty statements and trim
-                      
 
 
                 if token[0] == 'PRINT_VAR':
@@ -164,7 +174,7 @@ class Interpreter:
                                 self.variables[variable_name] //= variable_value # doing the division
                         # i.e. trying to add string to integer
                         except TypeError as e:
-                            print(f"Type error in line {self.line_number}: Cannot perform operation {op_token} between these types")
+                            print(f"RUNTIME ERROR: Line {self.line_number}")
                             sys.exit(1)
                         # general error by line
                         except Exception as e:
