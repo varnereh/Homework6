@@ -1,3 +1,5 @@
+# Ethan Varner
+# With help from ChatGPT and information from https://docs.python.org/3/library/re.html#
 import re   # for using regular expression
 import sys  # for terminating the program when error happens
 
@@ -42,6 +44,7 @@ class Interpreter:
         self.variables = {}
         self.line_number = 0
 
+
     def lexical_analysis(self, line):
         """
         This function uses regular expression for tokenizing. 
@@ -63,9 +66,7 @@ class Interpreter:
                     tokens.append(token)
                     
         return tokens
-
-
-        
+ 
 
     def parse(self, tokens):
         '''
@@ -102,8 +103,6 @@ class Interpreter:
                             self.parse(statement_tokens)  
                     # completely does not work without this return statement and it took forever to figure this out
                     return        
-
-
 
                 if token[0] == 'PRINT_VAR':
                     # skip over token name etc to variable
@@ -178,18 +177,16 @@ class Interpreter:
                             sys.exit(1)
                         # general error by line
                         except Exception as e:
-                            print(f"Error in line {self.line_number}: {str(e)}")
+                            print(f"RUNTIME ERROR: Line {self.line_number}: {str(e)}")
                             sys.exit(1)
                     # in case of incomplete statement or run out of tokens when it shouldn't have        
                     except StopIteration:
-                        print(f"Incomplete statement on line {self.line_number}")
+                        print(f"RUNTIME ERROR: Line {self.line_number}")
                         sys.exit(1)
         # default exception catch 
         except Exception as e:
-            print(f"Error parsing line {self.line_number}: {str(e)}")
+            print(f"RUNTIME ERROR: Line {self.line_number}: {str(e)}")
             sys.exit(1)
-
-   
 
 
     def run(self, file_name = ""):
@@ -207,8 +204,7 @@ class Interpreter:
 
                 tokens = self.lexical_analysis(line)
                 self.parse(tokens)
-
-        
+ 
 
 if __name__ == "__main__":
      # The second argument in sys.argv is expected to be the filename
@@ -230,4 +226,3 @@ if __name__ == "__main__":
     interpreter.run()
     # if there is no error in the .zpm file, the next line will get printed at the end
     # print(interpreter.variables)
-
